@@ -2,22 +2,27 @@ import joblib
 import pandas as pd
 import numpy as np
 
-def predict_house_price(input_data):
-    # 1. Load the "Frozen Brain"
+def predict():
+    # 1. Load the Model and the Column Map
     model = joblib.load('src/housing_model.pkl')
+    model_columns = joblib.load('src/model_columns.pkl')
     
-    # 2. Convert input to a DataFrame
-    input_df = pd.DataFrame([input_data])
+    # 2. Create a "Dummy House" with all zeros for all 224 columns
+    # In a real app, this data would come from a website form
+    sample_house = pd.DataFrame(0, index=[0], columns=model_columns)
     
-    # 3. Handle the 'Log' math (The model predicts in Log, we want Dollars)
-    prediction_log = model.predict(input_df)
+    # 3. Fill in some details for our "Test House"
+    # (Using some common column names from the dataset)
+    if 'GrLivArea' in sample_house.columns:
+        sample_house['GrLivArea'] = 2000  # 2000 square feet
+    if 'OverallQual' in sample_house.columns:
+        sample_house['OverallQual'] = 7   # 7/10 Quality
+        
+    # 4. Predict
+    prediction_log = model.predict(sample_house)
     final_price = np.expm1(prediction_log)
     
-    return final_price[0]
+    print(f"🏠 Estimated House Price: ${final_price[0]:,.2f}")
 
-# --- Testing it out ---
-# Let's pretend we have a new house (simplified example)
-# Note: In a real app, this dictionary would need ALL 224 columns
-print("AI is calculating price...")
-# Example dummy data - this is just a placeholder for now
-# actual_prediction = predict_house_price(some_data)
+if __name__ == "__main__":
+    predict()
