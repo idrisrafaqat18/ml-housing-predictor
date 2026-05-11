@@ -29,6 +29,6 @@ This project uses the Ames Housing Dataset to predict residential home prices. I
 - `venv/`: Virtual environment.
 
 ## 🏃 How to Run
-1. Clone the repo: `git clone <your-repo-url>`
+1. Clone the repo: `git clone https://github.com/idrisrafaqat18/ml-housing-predictor.git`
 2. Install dependencies: `pip install -r requirements.txt`
 3. Launch the app: `streamlit run src/app.py`
